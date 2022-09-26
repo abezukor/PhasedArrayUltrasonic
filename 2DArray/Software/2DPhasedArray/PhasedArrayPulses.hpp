@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <array>
@@ -11,16 +13,20 @@
 #define WAVELENGTH SPEED_OF_SOUND/FREQ
 #define WAVE_UNSHIFTED 0x00000000FFFFFFFF
 
-#define CLOCK_PIN 2
-#define SHIFT_REGISTER_WRITE_PIN 3
+
+#define SHIFT_REGISTER_WRITE_PIN 22
 #define CLOCK_PERIOD_US 1000
+
+#define CLOCK_PIN 28
 
 namespace PhasedArrayPulses{
 
-    std::array<std::bitset<NUM_STEPS>, NUM_EMITTERS> emitterTimings;
-    const std::array<uint8_t, NUM_EMITTERS> PIN_NUMBERS = {4, 5, 6, 7, 8};
+    constexpr std::array<uint8_t, NUM_EMITTERS> PIN_NUMBERS = {16, 17, 18, 19, 20, 21};
+
+    void initShiftRegisters(void);
 
     void createTimings(double theta);
+    void createWavesFromPhaseShift(uint8_t phaseShift);
 
     void writeToShiftRegisters();
 }

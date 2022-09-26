@@ -14,7 +14,7 @@ loop:
     set pins, 1 [1]
     set pins, 0
     jmp x-- loop
-    irq 0
+;    irq 0
 .wrap
 
 % c-sdk {

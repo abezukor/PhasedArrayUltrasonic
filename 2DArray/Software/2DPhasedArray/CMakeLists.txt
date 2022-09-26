@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.12)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 # Set name of project (as PROJECT_NAME) and C/C++ standards
-project(pio_pulses C CXX ASM)
+project(twoDPhasedArray C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -16,11 +16,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 pico_sdk_init()
 
 # Tell CMake where to find the executable source file
-add_executable(pio_pulses)
+add_executable(twoDPhasedArray)
 
-pico_generate_pio_header(pio_pulses ${CMAKE_CURRENT_LIST_DIR}/pulses.pio)
+pico_generate_pio_header(twoDPhasedArray ${CMAKE_CURRENT_LIST_DIR}/pulses.pio)
 
-target_sources(pio_pulses PRIVATE twoDPhasedArray.cpp PhasedArrayPulses.cpp)
+target_sources(twoDPhasedArray PRIVATE twoDPhasedArray.cpp PhasedArrayPulses.cpp ADCRead.cpp)
 
 # Create map/bin/hex/uf2 files
 pico_add_extra_outputs(${PROJECT_NAME})
@@ -30,6 +30,8 @@ target_link_libraries(${PROJECT_NAME}
     pico_stdlib
     hardware_pio
     hardware_clocks
+    hardware_adc
+    hardware_dma
 )
 
 # Enable usb output, disable uart output
