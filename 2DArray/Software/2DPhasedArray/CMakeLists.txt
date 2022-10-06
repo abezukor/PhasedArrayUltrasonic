@@ -12,15 +12,24 @@ set(CMAKE_CXX_STANDARD 20)
 # Add compilt commands
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+#Compiler options
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-volatile")
+
 # Creates a pico-sdk subdirectory in our project for the libraries
 pico_sdk_init()
 
 # Tell CMake where to find the executable source file
 add_executable(twoDPhasedArray)
 
-pico_generate_pio_header(twoDPhasedArray ${CMAKE_CURRENT_LIST_DIR}/pulses.pio)
+pico_generate_pio_header(twoDPhasedArray ${CMAKE_CURRENT_LIST_DIR}/pulses_pio/pulses.pio)
 
-target_sources(twoDPhasedArray PRIVATE twoDPhasedArray.cpp PhasedArrayPulses.cpp ADCRead.cpp)
+target_sources(twoDPhasedArray PRIVATE 
+    twoDPhasedArray.cpp 
+    pulses_pio/pulses_pio.cpp
+    PhasedArrayPulses.cpp 
+    ADCRead.cpp
+    pio_irh.cpp
+)
 
 # Create map/bin/hex/uf2 files
 pico_add_extra_outputs(${PROJECT_NAME})

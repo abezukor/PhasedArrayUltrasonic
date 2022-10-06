@@ -5,60 +5,83 @@
 #include <bitset>
 #include "pico/stdlib.h"
 
+#include "PIO_constants.hpp"
+#include "pulses_pio/pulses_pio.hpp"
+
+#include <iostream>
+
 std::array<std::bitset<NUM_STEPS>, NUM_EMITTERS> emitterTimings;
 
 #define initOutput(pin) {\
     gpio_init(pin); \
     gpio_set_dir(pin, GPIO_OUT); \
+    gpio_put(pin, false); \
 }
 
-void PhasedArrayPulses::initShiftRegisters(){
+void PhasedArrayPulses::init(){
+
     initOutput(SHIFT_REGISTER_WRITE_PIN);
+
     for(auto &p: PIN_NUMBERS){
         initOutput(p);
     }
 }
 
 void PhasedArrayPulses::createTimings(double theta){
-    bool reversed = theta<0;
-    theta = abs(theta);
     double phase_diff = 2*M_PI*DISTANCE_BETWEEN_EMITTERS*sin(theta)/(WAVELENGTH);
 
-    double current_phase = 0.0;
+    double currentPhase = 0.0;
+    int ps;
     for(uint8_t i=0; i<NUM_EMITTERS; i++){
-        uint8_t elem = reversed? NUM_EMITTERS-1-i: i;
-        double elementPhase = std::fmod(current_phase, 2*M_PI);
-        uint8_t beginningZeros = (uint8_t) (NUM_STEPS*elementPhase/(2*M_PI));
+        ps = (int) (NUM_STEPS*currentPhase/(2*M_PI));
 
-        emitterTimings[elem]= std::rotl(WAVE_UNSHIFTED, beginningZeros);
+        std::cout << "Beggining Zeros for " << i << " is " << ps << std::endl;
 
-        current_phase+=phase_diff;
+        emitterTimings[i]= std::bitset<NUM_STEPS>(std::rotl(WAVE_UNSHIFTED, ps));
+
+        currentPhase+=phase_diff;
     }
+    printf("Theta PD %f BT0: %s\n", phase_diff, emitterTimings[0].to_string<char,std::string::traits_type,std::string::allocator_type>().c_str());
+    printf("Theta PD %f BT1: %s\n", phase_diff, emitterTimings[1].to_string<char,std::string::traits_type,std::string::allocator_type>().c_str());
 }
-void PhasedArrayPulses::createWavesFromPhaseShift(uint8_t phaseShift){
+void PhasedArrayPulses::createWavesFromPhaseShift(uint16_t phaseShift){
 
-    uint16_t current_phase = 0;
+    int currentPhase = 0;
     for(uint8_t i=0; i<NUM_EMITTERS; i++){
-        emitterTimings[i]= std::rotl(WAVE_UNSHIFTED, current_phase);
-
-        current_phase+=phaseShift;
+        emitterTimings[i]= std::bitset<NUM_STEPS>(std::rotl(WAVE_UNSHIFTED, currentPhase));
+        currentPhase+=phaseShift;
     }
+
+    printf("BS BT0: %s\n", emitterTimings[0].to_string<char,std::string::traits_type,std::string::allocator_type>().c_str());
+    printf("BS BT1: %s\n", emitterTimings[1].to_string<char,std::string::traits_type,std::string::allocator_type>().c_str());
 }
 
 void PhasedArrayPulses::writeToShiftRegisters(void) {
+    std::bitset<NUM_EMITTERS> data(0);
 
     gpio_put(SHIFT_REGISTER_WRITE_PIN, true);
     for(uint8_t bit = 0; bit<NUM_STEPS; bit++){
 
         for(uint8_t transmitter = 0; transmitter < NUM_EMITTERS; transmitter++){
-            gpio_put(PIN_NUMBERS[transmitter], emitterTimings[transmitter][bit]);
+            data[transmitter] = emitterTimings[transmitter][bit];
         }
         
-        gpio_put(CLOCK_PIN, true);
-        sleep_us(CLOCK_PERIOD_US);
-        gpio_put(CLOCK_PIN, false);
-        sleep_us(CLOCK_PERIOD_US);
+        pulse_shift_registers(data);
     }
 
     gpio_put(SHIFT_REGISTER_WRITE_PIN, false);
+
+}
+
+void pulse_shift_registers(const std::bitset<NUM_EMITTERS>& data){
+    unsigned i = 0;
+    for(auto &p: PhasedArrayPulses::PIN_NUMBERS){
+        gpio_put(p, data[i]);
+        i++;
+    }
+    PulsesPIO::doPulsesBlocking(1);
+}
+
+double PhasedArrayPulses::degToRadians(double degrees){
+    return degrees * 2 *M_PI / 360;
 }
