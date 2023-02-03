@@ -2,6 +2,7 @@
 #include "pulses_pio.hpp"
 #include "pulses.pio.h"
 #include "hardware/clocks.h"
+
 #include "../PIO_constants.hpp"
 
 void PulsesPIO::pulses_program_init() {
@@ -31,8 +32,17 @@ void PulsesPIO::doPulsesBlocking(uint num_pulses) {
    finished = false;
    doPulses(num_pulses);
    while(!finished){
-      sleep_us(3);
+      tight_loop_contents();
    }
+}
+
+ADCRead::Amplitude_Return PulsesPIO::measureDistance(uint num_pulses) {
+   finished = false;
+   doPulses(num_pulses);
+   while(!finished){
+      tight_loop_contents();
+   }
+   return ADCRead::readADCDistance();
 }
 
 void PulsesPIO::interupt(void){

@@ -28,21 +28,19 @@ void PhasedArrayPulses::init(){
 }
 
 void PhasedArrayPulses::createTimings(double theta){
-    double phase_diff = 2*M_PI*DISTANCE_BETWEEN_EMITTERS*sin(theta)/(WAVELENGTH);
+    double phaseDiff = 2*M_PI*DISTANCE_BETWEEN_EMITTERS*sin(theta)/(WAVELENGTH);
 
-    double currentPhase = 0.0;
+    double elementPhase;
     int ps;
     for(uint8_t i=0; i<NUM_EMITTERS; i++){
-        ps = (int) (NUM_STEPS*currentPhase/(2*M_PI));
+        elementPhase = i*phaseDiff;
+        ps = round(elementPhase*(NUM_STEPS/(2*M_PI)));
 
         std::cout << "Beggining Zeros for " << i << " is " << ps << std::endl;
 
         emitterTimings[i]= std::bitset<NUM_STEPS>(std::rotl(WAVE_UNSHIFTED, ps));
 
-        currentPhase+=phase_diff;
     }
-    printf("Theta PD %f BT0: %s\n", phase_diff, emitterTimings[0].to_string<char,std::string::traits_type,std::string::allocator_type>().c_str());
-    printf("Theta PD %f BT1: %s\n", phase_diff, emitterTimings[1].to_string<char,std::string::traits_type,std::string::allocator_type>().c_str());
 }
 void PhasedArrayPulses::createWavesFromPhaseShift(uint16_t phaseShift){
 

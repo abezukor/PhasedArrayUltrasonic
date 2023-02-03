@@ -1,0 +1,18 @@
+;
+; Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+;
+; SPDX-License-Identifier: BSD-3-Clause
+;
+
+; SET pin 0 should be mapped to your LED GPIO
+
+.program pulses
+.wrap_target
+    pull 
+    mov x, osr
+loop:
+    set pins, 1 [1]
+    set pins, 0
+    jmp x-- loop
+    irq 0
+.wrap
