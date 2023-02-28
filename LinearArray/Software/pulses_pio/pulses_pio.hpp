@@ -3,7 +3,6 @@
 #include "pulses.pio.h"
 #include "../PhasedArrayPulses.hpp"
 
-#include "../ADCRead.hpp"
 
 #define ULTRASONIC_FREQUENCY 40000
 #define ULTRASONIC_PERIOD_US 25
@@ -14,7 +13,6 @@ namespace PulsesPIO {
 
     void doPulses(uint num_pulses);
     void doPulsesBlocking(uint num_pulses);
-    ADCRead::Amplitude_Return measureDistance(uint num_pulses);
 
     void interupt(void);
 }

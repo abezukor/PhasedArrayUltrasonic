@@ -2,6 +2,8 @@
 cmake_minimum_required(VERSION 3.12)
 
 # Include build functions from Pico SDK
+set(PICO_SDK_PATH ""../../../pico-sdk)
+
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 # Set name of project (as PROJECT_NAME) and C/C++ standards
@@ -27,7 +29,6 @@ target_sources(threeDPhasedArray PRIVATE
     threeDPhasedArray.cpp 
     pulses_pio/pulses_pio.cpp
     PhasedArrayPulses.cpp 
-    ADCRead.cpp
     pio_irh.cpp
 )
 
@@ -39,8 +40,7 @@ target_link_libraries(${PROJECT_NAME}
     pico_stdlib
     hardware_pio
     hardware_clocks
-    hardware_adc
-    hardware_dma
+    pico_multicore
 )
 
 # Enable usb output, disable uart output

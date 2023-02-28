@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.12)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 # Set name of project (as PROJECT_NAME) and C/C++ standards
-project(twoDPhasedArray C CXX ASM)
+project(linearArray C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -19,15 +19,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-volatile")
 pico_sdk_init()
 
 # Tell CMake where to find the executable source file
-add_executable(twoDPhasedArray)
+add_executable(linearArray)
 
-pico_generate_pio_header(twoDPhasedArray ${CMAKE_CURRENT_LIST_DIR}/pulses_pio/pulses.pio)
+pico_generate_pio_header(linearArray ${CMAKE_CURRENT_LIST_DIR}/pulses_pio/pulses.pio)
 
-target_sources(twoDPhasedArray PRIVATE 
-    twoDPhasedArray.cpp 
+target_sources(linearArray PRIVATE 
+    linearArray.cpp 
     pulses_pio/pulses_pio.cpp
     PhasedArrayPulses.cpp 
-    ADCRead.cpp
     pio_irh.cpp
 )
 

@@ -6,7 +6,6 @@
 #include "hardware/pio.h"
 #include "pulses.pio.h"
 
-#include "ADCRead.hpp"
 #include "PhasedArrayPulses.hpp"
 
 #include "PIO_constants.hpp"
@@ -25,19 +24,22 @@ int main() {
     printf("Writing to Shift Registers");
 
     PhasedArrayPulses::init();
-    PhasedArrayPulses::createTimings(
+    /*PhasedArrayPulses::createTimings(
         PhasedArrayPulses::degToRadians(-10.2)
-    );
+    );*/
+    PhasedArrayPulses::createWavesFromPhaseShift(10);
     PhasedArrayPulses::writeToShiftRegisters();
 
-    ADCRead::initADCAndDMA();
+    //ADCRead::initADCAndDMA();
     
 
     int i =0;
     while(true){
         PulsesPIO::doPulses(NUM_PULSES*NUM_STEPS);
-        std::cout << "Loop: " << i << std::endl;
+        //std::cout << "Loop: " << i << std::endl;
         //PhasedArrayPulses::createWavesFromPhaseShift(16);
+
+        sleep_ms(30);
         i++;
     }
 }
