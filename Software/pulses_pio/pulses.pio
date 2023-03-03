@@ -1,11 +1,12 @@
 
 .program pulses
 .wrap_target
-    pull 
-    mov x, osr
+    pull ; Wait to get the number of pulses from the FIFO, and place value in osr
+    mov x, osr ; Move OSR to Scratch Register
 loop:
-    set pins, 1 [1]
-    set pins, 0
-    jmp x-- loop
-    irq 0
+    set pins, 1 [1] ; Set the clock pin high and wait a cycle
+    set pins, 0 ; Set clock pin low
+    jmp x-- loop ; Go back to loop if X>0
+    irq 0 ; Set interupt when done
 .wrap
+; Restarts to wrap_target

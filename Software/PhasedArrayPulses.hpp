@@ -30,7 +30,7 @@ namespace PhasedArrayPulses{
     static constexpr std::array<uint8_t, NUM_ROWS> ROW_PIN_NUMBERS = {10, 11, 12, 13, 14, 15};
     static constexpr std::array<uint8_t, NUM_COLS> COL_PIN_NUMBERS = {16, 17, 18, 19, 21, 20};
 
-    static constexpr std::array<std::array<const point2, NUM_COLS>, NUM_ROWS> emitterPositons =
+    static constexpr std::array<std::array<const point2, NUM_COLS>, NUM_ROWS> emitterPositions =
         {{
             {{{0.0 * DISTANCE_BETWEEN_EMITTERS, -0.0 * DISTANCE_BETWEEN_EMITTERS}, {1.0 * DISTANCE_BETWEEN_EMITTERS, -0.0 * DISTANCE_BETWEEN_EMITTERS}, {2.0 * DISTANCE_BETWEEN_EMITTERS, -0.0 * DISTANCE_BETWEEN_EMITTERS}, {3.0 * DISTANCE_BETWEEN_EMITTERS, -0.0 * DISTANCE_BETWEEN_EMITTERS}, {4.0 * DISTANCE_BETWEEN_EMITTERS, -0.0 * DISTANCE_BETWEEN_EMITTERS}, {5.0 * DISTANCE_BETWEEN_EMITTERS, -0.0 * DISTANCE_BETWEEN_EMITTERS}}},
             {{{0.0 * DISTANCE_BETWEEN_EMITTERS, -1.0 * DISTANCE_BETWEEN_EMITTERS}, {1.0 * DISTANCE_BETWEEN_EMITTERS, -1.0 * DISTANCE_BETWEEN_EMITTERS}, {2.0 * DISTANCE_BETWEEN_EMITTERS, -1.0 * DISTANCE_BETWEEN_EMITTERS}, {3.0 * DISTANCE_BETWEEN_EMITTERS, -1.0 * DISTANCE_BETWEEN_EMITTERS}, {4.0 * DISTANCE_BETWEEN_EMITTERS, -1.0 * DISTANCE_BETWEEN_EMITTERS}, {5.0 * DISTANCE_BETWEEN_EMITTERS, -1.0 * DISTANCE_BETWEEN_EMITTERS}}},
@@ -46,18 +46,26 @@ namespace PhasedArrayPulses{
     class PhasedArrayPulse {
         public:
             /**
-             * Theta, Phi from -pi to pi
+             * Create a Phased Array Pulse using angles
+             * 
+             * @param theta Angle from -pi to pi
+             * @param Phi Angle from -pi to pi
             */
             PhasedArrayPulse(double theta, double phi);
 
-            /*
-            Alternitive Constructor using a constant phase shift for debugging
+            /**
+             * Alternative Constructor using a constant phase shift for debugging
             */
             PhasedArrayPulse(uint8_t phase_shift);
+
+            /**
+             * Write the current Phase Angle to the Shift Registers.
+            */
             void writeToShiftRegisters();
 
         private:
             double t, p;
+            
             std::bitset<NUM_STEPS> waves[NUM_ROWS][NUM_COLS];
 
             double pointPlaneDistance(const vector3& normalVector, double D, const point2& point) const;

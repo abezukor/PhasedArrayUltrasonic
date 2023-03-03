@@ -19,6 +19,9 @@ volatile bool updated = true;
 volatile double theta = 0.0;
 volatile double phi = 0.0;
 
+/**
+ * Thread For creating waves.
+*/
 void run_waves(){
 
     PhasedArrayPulses::PhasedArrayPulse a1(
@@ -28,7 +31,7 @@ void run_waves(){
 
     while (true){
         while(!updated){
-            a1.writeToShiftRegisters();
+            a1.writeToShiftRegisters(); //Re-write every NUM_SETS cycles as sometimes writes are not perfect or waves change due to interference.
             for(int i=0; i< NUM_SETS; i++){
                 PulsesPIO::doPulses(NUM_PULSES*NUM_STEPS);
                 sleep_ms(20);

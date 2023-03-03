@@ -54,7 +54,7 @@ PhasedArrayPulses::PhasedArrayPulse::PhasedArrayPulse(double theta, double phi) 
     double distanceToPlane, distanceDifferenceFromFarthest;
     for(uint8_t i =0; i<NUM_ROWS; i++){
         for(uint8_t j = 0; j < NUM_COLS; j++){
-            distanceToPlane = pointPlaneDistance(normalVector, planeConstant, emitterPositons[i][j]);
+            distanceToPlane = pointPlaneDistance(normalVector, planeConstant, emitterPositions[i][j]);
             distanceDifferenceFromFarthest = farthestDistance - distanceToPlane;
             waves[i][j] = std::bitset<NUM_STEPS>(std::rotl(WAVE_UNSHIFTED, distanceToSteps(distanceDifferenceFromFarthest)));
         }
@@ -124,16 +124,16 @@ const PhasedArrayPulses::point2& PhasedArrayPulses::PhasedArrayPulse::getClosest
 
     switch ((t>0) << 1 | (p>0)){
     case THETA_POS | PHI_POS:
-        return emitterPositons[0][NUM_COLS-1];
+        return emitterPositions[0][NUM_COLS-1];
         break;
     case THETA_POS:
-        return emitterPositons[NUM_ROWS-1][NUM_COLS-1];
+        return emitterPositions[NUM_ROWS-1][NUM_COLS-1];
         break;
     case PHI_POS:
-        return emitterPositons[NUM_ROWS-1][0];
+        return emitterPositions[NUM_ROWS-1][0];
         break;
     default:
-        return emitterPositons[0][0];
+        return emitterPositions[0][0];
         break;
     }
 }
@@ -144,16 +144,16 @@ const PhasedArrayPulses::point2& PhasedArrayPulses::PhasedArrayPulse::getFarthes
 
     switch ((t>0) << 1 | (p>0)){
         case THETA_POS | PHI_POS:
-            return emitterPositons[NUM_ROWS-1][0];
+            return emitterPositions[NUM_ROWS-1][0];
             break;
         case THETA_POS:
-            return emitterPositons[0][0];
+            return emitterPositions[0][0];
             break;
         case PHI_POS:
-            return emitterPositons[0][NUM_COLS-1];
+            return emitterPositions[0][NUM_COLS-1];
             break;
         default:
-            return emitterPositons[NUM_ROWS-1][NUM_COLS-1];
+            return emitterPositions[NUM_ROWS-1][NUM_COLS-1];
             break;
     }
 }
