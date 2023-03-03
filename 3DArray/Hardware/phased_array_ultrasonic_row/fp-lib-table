@@ -1,7 +1,0 @@
-(fp_lib_table
-  (lib (name "MCU_RaspberryPi_and_Boards")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/KiCad-RP-Pico/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.pretty")(options "")(descr ""))
-  (lib (name "TC4427")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/TC4427/footprints.pretty")(options "")(descr ""))
-  (lib (name "SNx4HC157")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/SNx4HC157/footprints.pretty")(options "")(descr ""))
-  (lib (name "CD4517BE")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/CD4517BE/footprints.pretty")(options "")(descr ""))
-  (lib (name "Custom")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/Custom/footprints.pretty")(options "")(descr ""))
-)

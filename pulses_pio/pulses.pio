@@ -1,0 +1,10 @@
+.program pulses
+.wrap_target
+    pull 
+    mov x, osr
+loop:
+    set pins, 1 [1]
+    set pins, 0
+    jmp x-- loop
+    irq 0
+.wrap

@@ -1,7 +1,0 @@
-(sym_lib_table
-  (lib (name "MCU_RaspberryPi_and_Boards")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/KiCad-RP-Pico/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.kicad_sym")(options "")(descr ""))
-  (lib (name "TC4427")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/TC4427/2022-09-02_21-17-09.kicad_sym")(options "")(descr ""))
-  (lib (name "UltrasonicPartsLib")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/Custom/UltrasonicPartsLib.kicad_sym")(options "")(descr ""))
-  (lib (name "SNx4HC157")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/SNx4HC157/SNx4HC157.kicad_sym")(options "")(descr ""))
-  (lib (name "CD4517BE")(type "KiCad")(uri "${KIPRJMOD}/../../../KiCadParts/CD4517BE/2022-09-06_21-47-34.kicad_sym")(options "")(descr ""))
-)
